@@ -1,0 +1,152 @@
+body, html {
+    height: 100%;
+    margin: 0;
+}
+
+.main-image {
+    max-width: 100%;
+    margin: auto;
+    position: relative;
+    overflow: hidden;
+}
+
+.main-image img {
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
+}
+
+
+.welcome {
+    font-family: 'Ruluko', sans-serif;
+    margin: 70px 280px 30px;
+    font-size: 30px;
+    text-align: center;
+    letter-spacing: 0.015em;
+    line-height: 50px;
+}
+
+
+
+
+.our-blogs {
+    max-width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; 
+    align-items: center;
+    list-style: none;
+    padding: 0;
+
+}
+
+.our-blogs li {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    max-width: 600px;
+    margin: 10px 20px;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.blog-image {
+    width: 100%;
+    display: block;
+    margin: 0 auto;
+}
+
+.blog-image img {
+    width: 100%;
+    object-fit: cover;
+    height: 100%;
+    border-radius: 10px;
+}
+
+
+a {
+    text-align: left;
+    text-decoration: none;
+    font-weight: none;
+    color: #333
+}
+
+h2 {
+    margin: 10px auto;
+    font-family: 'Inter', monospace;
+    text-align: justify;
+    font-weight: bold;
+    font-size: 29px;
+    line-height: 33.8px;
+    width: 100%;
+}
+
+h3 {
+    opacity: 0.5;
+    font-family: 'Inter', monospace;
+    text-align: justify;
+    font-weight: 500;
+    font-size: 17px;
+    line-height: 32.4px;
+    width: 100%;
+}
+
+.our-blogs li p {
+    font-family: 'Inter', monospace;
+    font-weight: 1000;
+    font-size: 14px;
+    line-height: 18.2px;
+}
+
+.date {
+    opacity: 0.5;
+    margin-left: 10px;
+    font-weight: 500;
+}
+
+@media only screen and (min-width: 740px) and (max-width: 1239px){
+   
+    #blog .welcome {
+        margin: 70px 50px 20px;
+        list-style: 20px;
+    }
+
+    #blog .our-blogs li {
+        margin: 20px 20px;
+    }
+
+    #blog {
+        padding-top: 100px;
+    }
+}
+
+@media only screen and (max-width: 739px) { 
+   
+    #blog .welcome {
+        margin: 30px 20px 20px;
+        font-size: 12px;
+        line-height: 20px;
+    }
+
+    #blog .our-blogs li {
+        margin: 0 20px 10px;
+    }
+
+    #blog .our-blogs li h2 {
+        font-size: 14px;
+        line-height: 20px;
+    }
+
+    #blog .our-blogs li h3,  #blog .our-blogs li p {
+        font-size: 10px;
+        line-height: 24px;
+        margin: 0;
+    }
+
+    #blog {
+        padding-top: 100px;
+    }
+}
+
+
+
