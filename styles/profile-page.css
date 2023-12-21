@@ -1,0 +1,126 @@
+/* Start: Profile screen */
+#profile-screen {
+    padding-top: 100px;
+}
+#profile-screen .address-pass,
+#profile-screen .info,
+#profile-screen .name {
+    display: flex;
+    gap: 228px;
+    justify-content: center;
+}
+
+#profile-screen .profile-title {
+    color: #B48400;
+    font-family: Inter;
+    font-size: 60px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 24px;
+    /* padding-left: 309px;
+    padding-bottom: 30px;
+    padding-top: 30px; */
+    padding: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 60px;
+}
+
+#profile-screen .input-text {
+    border: 0.2px solid #000;
+    background: #FFF;
+    width: 342px;
+    height: 38px;
+    opacity: 0.5;
+}
+
+#profile-screen .text {
+    color: #000;
+    font-family: Inter;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    padding-bottom: 9px;
+}
+
+#profile-screen .email,
+#profile-screen .phone-number,
+#profile-screen .address,
+#profile-screen .register-date
+{
+    padding-top: 40px;
+}
+
+#profile-screen .first-name input,
+#profile-screen .last-name input,
+#profile-screen .email input,
+#profile-screen .phone-number input,
+#profile-screen .address input,
+#profile-screen .register-date input
+{
+    padding-left: 12px;
+    font-size: 16px;
+}
+
+#profile-screen .button-profile {
+    width: 220px;
+    height: 56px;
+    background-color: #FFF7E4;
+    border-radius: 9px;
+    color: #000;
+    text-align: center;
+    font-family: Inter;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 18px;
+}
+
+#profile-screen .update-pass {
+    padding-top: 46px;
+}
+
+#profile-screen .button-update-pass {
+    display: flex;
+    justify-content: center;
+    gap: 54px;
+}
+
+#profile-screen .button-profile:hover {
+    background-color: #f2c96a;
+}
+
+.notification {
+    display: none;
+    z-index: 1;
+    position: absolute;
+    justify-content: center;
+    align-items: center; 
+    width: 200px;
+    height: 52px;
+    /* background-color: #FFF7E4; */background-color: #f2c96a;
+    border-color: #f2c96a;
+    border-radius:  9px;
+    color: #000;
+    text-align: center;
+    font-family: Inter;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 18px;
+    transform: translateX(110%) translateY(-100%);
+    margin-top: 10px;
+}
+.notification::before {
+    content: "";
+    position: absolute;
+    transform:translateY(40%) translateX(-100%);
+    top:0;
+    left: 0;
+    border-top: 10px solid transparent;
+    border-right:10px solid  #f2c96a;
+    border-bottom: 10px solid transparent;
+}
+/* End: Profile screen */
