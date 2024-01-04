@@ -1,32 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="../scripts/components.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <script type="module" src="../scripts/product-page.js"></script>
-    <script src="../scripts/product-page.js"></script>
-    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPG8FJ0V7irTLQ8Uo0qcPxh4Plq7G5tGm0rU+1SPhVotteLpBERwTkw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script type="module" src="../scripts/products-page.js"></script>
+    <script src="../scripts/products-page.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"
+        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+        integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPG8FJ0V7irTLQ8Uo0qcPxh4Plq7G5tGm0rU+1SPhVotteLpBERwTkw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="../assets/fonts/themify-icons/themify-icons.css">
     <link rel="stylesheet" href="../styles/components.css">
     <link rel="stylesheet" href="../styles/products-page.css">
     <title>IE104</title>
 </head>
-<body>  
-    
-    
-    <script>addHeader()</script>
+
+<body>
+
+
+    <script>
+        addHeader()
+        // Wait for the DOM to be ready before calling getAllProducts()
+        document.addEventListener('DOMContentLoaded', function() {
+            getAllProducts();
+        });
+    </script>
+
     <main>
         <section id="product-screen">
             <div class="background-img">
-                <img src="../assets/Furniture_Photos/Background_Photos/Bedroom_Screen/Main_Photo/Bed.webp" alt="Bedroom">
+                <img src="../assets/Furniture_Photos/Background_Photos/Bedroom_Screen/Main_Photo/Bed.webp"
+                    alt="Bedroom">
             </div>
-    
+
             <div class="product-wrap">
-    
+
                 <div class="product-category">
                     <p>CATEGORY</p>
                     <ul class="product-category-nav">
@@ -35,13 +48,16 @@
                                 BEDROOM
                                 <!-- <i class="ti-angle-down"></i> -->
                             </a>
-    
+
                             <ul class="product-category-subnav">
                                 <li><a href="#" onclick="goToProduct('products-page.html','bedroom')">Beds</a></li>
-                                <li><a href="#" onclick="goToProduct('products-page.html','bedroom')">Nightstands & Dressers</a></li>
-                                <li><a href="#" onclick="goToProduct('products-page.html','bedroom')">Accent Tables</a></li>
+                                <li><a href="#" onclick="goToProduct('products-page.html','bedroom')">Nightstands &
+                                        Dressers</a></li>
+                                <li><a href="#" onclick="goToProduct('products-page.html','bedroom')">Accent Tables</a>
+                                </li>
                                 <li><a href="#" onclick="goToProduct('products-page.html','bedroom')">Chairs</a></li>
-                                <li><a href="#" onclick="goToProduct('products-page.html','bedroom')">Benches & Ottomans</a></li>
+                                <li><a href="#" onclick="goToProduct('products-page.html','bedroom')">Benches &
+                                        Ottomans</a></li>
                             </ul>
                         </li>
                         <li>
@@ -49,20 +65,25 @@
                                 LIVING ROOM
                                 <!-- <i class="ti-angle-down"></i> -->
                             </a>
-    
+
                             <ul class="product-category-subnav">
                                 <li><a href="#" onclick="goToProduct('products-page.html','living_room')">Sofas</a></li>
-                                <li><a href="#" onclick="goToProduct('products-page.html','living_room')">Sectionals</a></li>
-                                <li><a href="#" onclick="goToProduct('products-page.html','living_room')">Accent Tables </a></li>
-                                <li><a href="#" onclick="goToProduct('products-page.html','living_room')">Chairs</a></li>
-                                <li><a href="#" onclick="goToProduct('products-page.html','living_room')">Benches & Ottomans</a></li>
-                                <li><a href="#" onclick="goToProduct('products-page.html','living_room')">Offices</a></li>
+                                <li><a href="#" onclick="goToProduct('products-page.html','living_room')">Sectionals</a>
+                                </li>
+                                <li><a href="#" onclick="goToProduct('products-page.html','living_room')">Accent Tables
+                                    </a></li>
+                                <li><a href="#" onclick="goToProduct('products-page.html','living_room')">Chairs</a>
+                                </li>
+                                <li><a href="#" onclick="goToProduct('products-page.html','living_room')">Benches &
+                                        Ottomans</a></li>
+                                <li><a href="#" onclick="goToProduct('products-page.html','living_room')">Offices</a>
+                                </li>
                             </ul>
                         </li>
                         <li><a href="#" onclick="changeProductPage('dining')">DINING</a></li>
                     </ul>
                 </div>
-    
+
                 <div class="product-box">
                     <div class="product-box-header">
                         <div class="product-menu">
@@ -74,63 +95,69 @@
 
                         <div class="search-box">
                             <input type="text" id="search-product-page" placeholder="Search" style="display: block;">
-                            <button class="search-button-navigation" >
+                            <button class="search-button-navigation">
                                 <i class="fa-solid fa-magnifying-glass" style="color: #000000;"></i>
                             </button>
-                        </div>  
+                        </div>
 
                         <div class="product-sort-by">
                             <p>Sort by</p>
                             <select name="sortby" id="sort-by" onchange="sortProductList(this.value)">
                                 <!-- <option value="Best Seller">Best Seller</option> -->
-                                <option value='default' >Default</option>
-                                <option value='low-high' >Price: Low-High</option>
-                                <option value='high-low' >Price: High-Low</option>
-                                <option value='a-z' >Name: A-Z</option>
-                                <option value='z-a' >Name: Z-A</option>
+                                <option value='default'>Default</option>
+                                <option value='low-high'>Price: Low-High</option>
+                                <option value='high-low'>Price: High-Low</option>
+                                <option value='a-z'>Name: A-Z</option>
+                                <option value='z-a'>Name: Z-A</option>
                             </select>
                         </div>
                     </div>
-                    
-                    <div class="product-box-detail">
+
+                    <div id="productContainer" class="product-box-detail">
                         <!-- <div class="product-1">
-                            <img src="../assets/Furniture_Photos/Products_Photos/P0007/1.webp" alt="The Eldridge Bed" class="product-img">
-                            <div class="product-intro"> 
+                            <img src="../assets/Furniture_Photos/Products_Photos/P0007/1.webp" alt="The Eldridge Bed"
+                                class="product-img">
+                            <div class="product-intro">
                                 <p class="product-name">The Eldridge Bed</p>
                                 <p class="product-cost">$3,885</p>
                             </div>
                         </div>
                         <div class="product-1">
-                            <img src="../assets/Furniture_Photos/Products_Photos/P0008/1.webp" alt="The Essex Bed" class="product-img">
+                            <img src="../assets/Furniture_Photos/Products_Photos/P0008/1.webp" alt="The Essex Bed"
+                                class="product-img">
                             <div class="product-intro">
                                 <p class="product-name">The Essex Bed</p>
                                 <p class="product-cost">$3,885</p>
                             </div>
                         </div>
                         <div class="product-1">
-                            <img src="../assets/Furniture_Photos/Products_Photos/P0009/1.webp" alt="The Kent Bed" class="product-img">
+                            <img src="../assets/Furniture_Photos/Products_Photos/P0009/1.webp" alt="The Kent Bed"
+                                class="product-img">
                             <div class="product-intro">
                                 <p class="product-name">The Kent Bed</p>
                                 <p class="product-cost">$3,885</p>
                             </div>
                         </div>
-        
+
                         <div class="product-1">
-                            <img src="../assets/Furniture_Photos/Products_Photos/P0010/1.webp" alt="The Smith Bed" class="product-img">
+                            <img src="../assets/Furniture_Photos/Products_Photos/P0010/1.webp" alt="The Smith Bed"
+                                class="product-img">
                             <div class="product-intro">
                                 <p class="product-name">The Smith Bed</p>
                                 <p class="product-cost">$3,885</p>
                             </div>
                         </div>
                         <div class="product-1">
-                            <img src="../assets/Furniture_Photos/Products_Photos/P0011/1.webp" alt="The Thompson Canopy Bed" class="product-img">
+                            <img src="../assets/Furniture_Photos/Products_Photos/P0011/1.webp"
+                                alt="The Thompson Canopy Bed" class="product-img">
                             <div class="product-intro">
                                 <p class="product-name">The Thompson Canopy Bed</p>
                                 <p class="product-cost">$3,885</p>
                             </div>
                         </div>
                         <div class="product-1">
-                            <img src="../assets/Furniture_Photos/Products_Photos/P0012/1.webp" alt="The Wythe Bed" class="product-img">
+                            <img src="../assets/Furniture_Photos/Products_Photos/P0012/1.webp" alt="The Wythe Bed"
+                                class="product-img">
                             <div class="product-intro">
                                 <p class="product-name">The Wythe Bed</p>
                                 <p class="product-cost">$3,885</p>
@@ -138,16 +165,19 @@
                         </div> -->
                     </div>
                 </div>
-    
+
             </div>
-    
+
             <div class="sample">
                 <p class="sample-text">Get Inspired</p>
             </div>
             <div class="sample-bedroom">
-                <img src="../assets/Furniture_Photos/Background_Photos/Bedroom_Screen/Inspired/1.webp" alt="Sample 1" class="sample-img1">
-                <img src="../assets/Furniture_Photos/Background_Photos/Bedroom_Screen/Inspired/2.webp" alt="Sample 2" class="sample-img2">
-                <img src="../assets/Furniture_Photos/Background_Photos/Bedroom_Screen/Inspired/3.webp" alt="Sample 3" class="sample-img3">
+                <img src="../assets/Furniture_Photos/Background_Photos/Bedroom_Screen/Inspired/1.webp" alt="Sample 1"
+                    class="sample-img1">
+                <img src="../assets/Furniture_Photos/Background_Photos/Bedroom_Screen/Inspired/2.webp" alt="Sample 2"
+                    class="sample-img2">
+                <img src="../assets/Furniture_Photos/Background_Photos/Bedroom_Screen/Inspired/3.webp" alt="Sample 3"
+                    class="sample-img3">
             </div>
         </section>
         <script>addToTop()</script>
@@ -157,11 +187,11 @@
     <script>addFooter()</script>
 </body>
 <script>
-    $(document).ready(function() {
-    $('.fa-solid.fa-list').click(function() {
-        $('.product-category').slideToggle();
+    $(document).ready(function () {
+        $('.fa-solid.fa-list').click(function () {
+            $('.product-category').slideToggle();
+        })
     })
-})
 </script>
 
 </html>

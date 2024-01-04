@@ -59,9 +59,9 @@
     line-height: 40px;
 }
 
-/* .product-category-nav li:hover .product-category-subnav {
+.product-category-nav li:hover .product-category-subnav {
     display: block;
-} */
+}
 
 .product-category-subnav li:hover a {
     color: #000;
@@ -127,6 +127,8 @@
 .product-img {
     width: 269px;
     height: 175px;
+    object-fit: cover; /* Hiển thị ảnh mà không làm thay đổi tỷ lệ khung hình, cắt bớt phần dư thừa */
+    max-width: 100%;
 }
 
 .product-img:hover {

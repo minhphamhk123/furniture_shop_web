@@ -41,7 +41,7 @@ function checkAccount(userName, password) {
     // gọi request tới server
     // var result = true;
 
-    if (userName == '123' && password == 'asd') {
+    if (userName == '123' && password == '123') {
         addToWishList(productList_Bedroom)
         goTo('home-page.html');
         localStorage.setItem('user',JSON.stringify('is login'))
