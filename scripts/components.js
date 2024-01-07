@@ -80,22 +80,22 @@ function addHeader() {
     `)
 
     // Open Search Box
-const searchBtn = document.querySelector('.search-button-navigation');
-const searchInput = document.querySelector('.search-box #search');
+    const searchBtn = document.querySelector('.search-button-navigation');
+    const searchInput = document.querySelector('.search-box #search');
 
-searchBtn.addEventListener('click', () => {
-    if (searchInput.style.display === 'none') {
-        searchInput.style.display = 'block';
-    } else {
-        searchInput.style.display = 'none';
-    }
-})
-/////
-$(document).ready(function() {
-    $('.fa-solid.fa-bars').click(function() {
-        $('.text-navigation').slideToggle();
+    searchBtn.addEventListener('click', () => {
+        if (searchInput.style.display === 'none') {
+            searchInput.style.display = 'block';
+        } else {
+            searchInput.style.display = 'none';
+        }
     })
-})
+        /////
+        $(document).ready(function () {
+            $('.fa-solid.fa-bars').click(function () {
+                $('.text-navigation').slideToggle();
+            })
+        })
 
 }
 
@@ -158,7 +158,7 @@ function addFooter() {
 }
 
 //Change Header color
-window.addEventListener('scroll', function() {
+window.addEventListener('scroll', function () {
     var header = document.querySelector('#navigation');
     // var header = document.querySelector('#navigation');
     var scrollPosition = window.scrollY;
@@ -180,10 +180,10 @@ function addToTop() {
 }
 
 // Scroll button
-window.addEventListener("scroll", function() {
+window.addEventListener("scroll", function () {
     const toTop = document.querySelector(".to-top");
     var scrollTop = window.scrollY;
-    if(scrollTop > 0) {
+    if (scrollTop > 0) {
         toTop.classList.add('active');
     } else {
         toTop.classList.remove('active');
@@ -191,7 +191,7 @@ window.addEventListener("scroll", function() {
 });
 
 //Change Header color
-window.addEventListener('scroll', function() {
+window.addEventListener('scroll', function () {
     var header = document.querySelector('#navigation');
     // var header = document.querySelector('#navigation');
     var scrollPosition = window.scrollY;
@@ -205,34 +205,34 @@ window.addEventListener('scroll', function() {
 
 //change page
 function goTo(x) {
-    location.href=x;   
+    location.href = x;
 }
 
 function goToProduct(x, id) {
-    location.href=x+ "?id=" + id;
+    location.href = x + "?id=" + id;
 }
 // go to detailProduct   
 function goToDetailProduct(x, id1, id2) {
-    location.href=x+ "?id1=" + id1 +"&id2=" + id2;
+    location.href = x + "?id1=" + id1 + "&id2=" + id2;
 }
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     // Cập nhật số lượng ban đầu
     updateQuantity();
 
     // Lắng nghe sự kiện storage khi có thay đổi trong localStorage
-    window.addEventListener('click', function(event) {
-    if (event.key === 'products') {
-        // Cập nhật số lượng khi có thay đổi trong danh sách sản phẩm
-        updateQuantity();
-    }
+    window.addEventListener('click', function (event) {
+        if (event.key === 'products') {
+            // Cập nhật số lượng khi có thay đổi trong danh sách sản phẩm
+            updateQuantity();
+        }
     });
 
     function updateQuantity() {
-    const listItem = JSON.parse(localStorage.getItem('products'));
-    var count = listItem ? listItem.length : 0;
-    if (document.querySelector('.quantity') != null)
-        document.querySelector('.quantity').innerHTML = count;
+        const listItem = JSON.parse(localStorage.getItem('products'));
+        var count = listItem ? listItem.length : 0;
+        if (document.querySelector('.quantity') != null)
+            document.querySelector('.quantity').innerHTML = count;
     }
 });
 
@@ -244,14 +244,14 @@ function logOut() {
 //check log in
 
 function checkLogIn() {
-    if(localStorage.getItem('user')) {
+    if (localStorage.getItem('user')) {
     }
     else {
-        document.getElementsByClassName('cart-box')[0].style.display='none'
-        document.getElementsByClassName('heart-box')[0].style.display='none'
-        document.getElementsByClassName('profile-page')[0].style.display='none'
-        document.getElementsByClassName('my-order')[0].style.display='none'
-        document.getElementsByClassName('log-out')[0].innerHTML=`<button onclick="logOut()">Login</button>`
+        document.getElementsByClassName('cart-box')[0].style.display = 'none'
+        document.getElementsByClassName('heart-box')[0].style.display = 'none'
+        document.getElementsByClassName('profile-page')[0].style.display = 'none'
+        document.getElementsByClassName('my-order')[0].style.display = 'none'
+        document.getElementsByClassName('log-out')[0].innerHTML = `<button onclick="logOut()">Login</button>`
     }
 }
 
@@ -262,17 +262,17 @@ function getProductInfoApi(callback) {
     async function fetchApiBedroomProducts() {
         let tagName = 'Bedroom';
         const responseAPI = await fetch(`http://localhost:5206/api/Furniture/GetProductByTagName${tagName}`)
-        .then(response => {
-            if (!response.ok) {
-                console.log('lay api that bai');
-            }
+            .then(response => {
+                if (!response.ok) {
+                    console.log('lay api that bai');
+                }
 
-            return response.json();
-        })
-        .then(data => {
-            localStorage.setItem('productList_Bedroom', JSON.stringify(data));
-        })  
-        .catch(error => console.error("Error fetching data:", error));
+                return response.json();
+            })
+            .then(data => {
+                localStorage.setItem('productList_Bedroom', JSON.stringify(data));
+            })
+            .catch(error => console.error("Error fetching data:", error));
     }
 
     // get by name
@@ -280,17 +280,17 @@ function getProductInfoApi(callback) {
     async function fetchApiLivingroomProducts() {
         let tagName = 'Livingroom';
         const responseAPI = await fetch(`http://localhost:5206/api/Furniture/GetProductByTagName${tagName}`)
-        .then(response => {
-            if (!response.ok) {
-                console.log('lay api that bai');
-            }
+            .then(response => {
+                if (!response.ok) {
+                    console.log('lay api that bai');
+                }
 
-            return response.json();
-        })
-        .then(data => {
-            localStorage.setItem('productList_Livingroom', JSON.stringify(data));
-        })  
-        .catch(error => console.error("Error fetching data:", error));
+                return response.json();
+            })
+            .then(data => {
+                localStorage.setItem('productList_Livingroom', JSON.stringify(data));
+            })
+            .catch(error => console.error("Error fetching data:", error));
     }
 
     // get by name
@@ -298,17 +298,17 @@ function getProductInfoApi(callback) {
     async function fetchApiDiningroomProducts() {
         let tagName = 'Diningroom';
         const responseAPI = await fetch(`http://localhost:5206/api/Furniture/GetProductByTagName${tagName}`)
-        .then(response => {
-            if (!response.ok) {
-                console.log('lay api that bai');
-            }
+            .then(response => {
+                if (!response.ok) {
+                    console.log('lay api that bai');
+                }
 
-            return response.json();
-        })
-        .then(data => {
-            localStorage.setItem('productList_Dining', JSON.stringify(data));
-        })  
-        .catch(error => console.error("Error fetching data:", error));
+                return response.json();
+            })
+            .then(data => {
+                localStorage.setItem('productList_Dining', JSON.stringify(data));
+            })
+            .catch(error => console.error("Error fetching data:", error));
     }
 
     setTimeout(() => {
@@ -318,17 +318,17 @@ function getProductInfoApi(callback) {
 }
 
 function show_notification() {
-    notification=document.getElementsByClassName('notification')[0]
-    notification.style.display='flex'
+    notification = document.getElementsByClassName('notification')[0]
+    notification.style.display = 'flex'
     setTimeout(() => {
         close_notification()
     }, 2000);
 }
 //close notification
 function close_notification() {
-    notification=document.getElementsByClassName('notification')[0]
-    notification.style.display='none'
-//    location.reload()
+    notification = document.getElementsByClassName('notification')[0]
+    notification.style.display = 'none'
+    //    location.reload()
 }
 
 function preCheckAccount(userName, password) {
@@ -403,16 +403,16 @@ function logOut() {
 //check log in
 
 function checkLogIn() {
-    if(localStorage.getItem('user')) {
+    if (localStorage.getItem('user')) {
         console.log('đã đăng nhập')
     }
     else {
         console.log('chưa đăng nhập')
-        document.getElementsByClassName('cart-box')[0].style.display='none'
-        document.getElementsByClassName('heart-box')[0].style.display='none'
-        document.getElementsByClassName('profile-page')[0].style.display='none'
-        document.getElementsByClassName('my-order')[0].style.display='none'
-        document.getElementsByClassName('log-out')[0].innerHTML=`<button onclick="logOut()">Login</button>`
+        document.getElementsByClassName('cart-box')[0].style.display = 'none'
+        document.getElementsByClassName('heart-box')[0].style.display = 'none'
+        document.getElementsByClassName('profile-page')[0].style.display = 'none'
+        document.getElementsByClassName('my-order')[0].style.display = 'none'
+        document.getElementsByClassName('log-out')[0].innerHTML = `<button onclick="logOut()">Login</button>`
     }
 }
 

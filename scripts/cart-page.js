@@ -1,4 +1,4 @@
-console.log(JSON.parse(localStorage.getItem('users')))
+console.log("users: ", JSON.parse(localStorage.getItem('users')))
 
 //get product from localStorage
 function getProducts() {
@@ -31,29 +31,29 @@ function getProducts() {
                 </div>
         ` 
         let products=JSON.parse(localStorage.getItem("products"));
-        console.log(products)
+        console.log("data temp: ", products)
         products.forEach(product => {
             total+=parseFloat(product.producttotal);
             document.getElementsByClassName('cart-products')[0].innerHTML+=`
             <div class="cart-product" >
                             <div class="product-detail" onclick="goToDetailProduct('product-detail-page.html','${product.id1}','${product.id2}')">
-                                <img src=${product.img} alt="" class="product-image" >
+                                <img src=${product.infor.images[0]} alt="" class="product-image" >
                                 <div class="product-item">
-                                    <p class="product-name">${product.productname}</p>
+                                    <p class="product-name">${product.infor.title}</p>
                                 </div>
                             </div>
 
                             <div class="product-total">
-                                <div class="product-price">$${product.productprice}</div>
+                                <div class="product-price">$${product.infor.price}</div>
                                 <div class="cart-add-minus-button">
-                                <button class="ti-minus" onclick="decreaseproduct('${product.productname}')"></button>
-                                <div class="quantity" data-productname="${product.productname}">${product.productquan}</div>
-                                <button class="ti-plus" onclick="increaseproduct('${product.productname}')"></button>
+                                <button class="ti-minus" onclick="decreaseproduct('${product.infor.title}')"></button>
+                                <div class="quantity" data-productname="${product.infor.title}">${product.productquan}</div>
+                                <button class="ti-plus" onclick="increaseproduct('${product.infor.title}')"></button>
                                 </div>
             
                                 <div class="product-total-price">$${product.producttotal}</div>
 
-                                <button class="trash-icon" onclick="removeCart('${product.productname}')">
+                                <button class="trash-icon" onclick="removeCart('${product.infor.title}')">
                                 <img src="../assets/Cart empty/delete.png" alt="trash icon">
                                 </button>
                             </div>
@@ -109,52 +109,36 @@ function increaseproduct(curr) {
             const updatedQuantity = currentQuantity + 1;
             quantityElement.textContent = updatedQuantity;
 
-            const productToUpdate = cartList.find(product => product.productname === curr);
+            const productToUpdate = cartList.find(product => product.infor.title === curr);
             productToUpdate.productquan = updatedQuantity;
-            productToUpdate.producttotal = updatedQuantity * parseFloat(productToUpdate.productprice);
+            productToUpdate.producttotal = updatedQuantity * parseFloat(productToUpdate.infor.price);
         }
     }
 
     localStorage.setItem("products", JSON.stringify(cartList));
     getProducts();
 }
-function increaseproduct1(curr) {
-    const cartList = JSON.parse(localStorage.getItem("products"));
-    const quantityElement = document.querySelector(".quantity");
-    const currentQuantity = parseInt(quantityElement.textContent);
-    const updatedQuantity = currentQuantity + 1;
-    quantityElement.textContent = updatedQuantity;
 
-    const productToUpdate = cartList.find(product => product.productname === curr);
-    productToUpdate.productquan = updatedQuantity;
-    productToUpdate.producttotal = (updatedQuantity*parseFloat(productToUpdate.productprice));
-    quantityElement.innerHTML.textContent = updatedQuantity;
-    localStorage.setItem("products", JSON.stringify(cartList));
-    console.log(productToUpdate.productprice);
-    getProducts();
-    
-}
 //decrease product
 function decreaseproduct(curr) {
     const cartList = JSON.parse(localStorage.getItem("products"));
     const quantityElements = document.getElementsByClassName("quantity");
-
     for (let i = 0; i < quantityElements.length; i++) {
         const quantityElement = quantityElements[i];
         const productName = quantityElement.dataset.productname;
-
         if (productName === curr) {
             const currentQuantity = parseInt(quantityElement.textContent);
             const updatedQuantity = currentQuantity - 1;
-
+            console.log("currentQuantity: ", currentQuantity)
+            console.log("updatedQuantity: ", updatedQuantity)
             if (updatedQuantity <= 0) {
                 removeCart(curr);
             } else {
                 quantityElement.textContent = updatedQuantity;
 
-                const productToUpdate = cartList.find(product => product.productname === curr);
+                const productToUpdate = cartList.find(product => product.infor.title === curr);
                 productToUpdate.productquan = updatedQuantity;
-                productToUpdate.producttotal = updatedQuantity * parseFloat(productToUpdate.productprice);
+                productToUpdate.producttotal = updatedQuantity * parseFloat(productToUpdate.infor.price);
             }
         }
     }

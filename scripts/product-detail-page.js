@@ -1,3 +1,8 @@
+//For change image
+var currentImage = 1;
+var totalImages = 0;
+var fullInfo = [];
+
 async function LoadFromApi() {
     var urlParams = new URLSearchParams(window.location.search);
     var id1 = urlParams.get('id1');
@@ -19,10 +24,26 @@ async function LoadFromApi() {
         const productContainer = document.getElementById('product-detail-page');
 
         if (data.message === "OK") {
-            console.log(data);
-            const product = data.products;
+            createFullPage(data, namePath);
+            fullInfo = product;
+        } else {
+            // Hiển thị thông báo "No product"
+            const noProductMessage = document.createElement('p');
+            noProductMessage.textContent = "Not found";
+            productContainer.appendChild(noProductMessage);
+        }
 
-            document.getElementsByClassName('item-detail')[0].innerHTML += `
+    } catch (error) {
+        console.error("Error fetching data:", error);
+        throw error;
+    }
+
+}
+
+function createFullPage(data, namePath) {
+    const product = data.products;
+    totalImages = product.images.length;
+    document.getElementsByClassName('item-detail')[0].innerHTML += `
                 <div class="navigation-product-detail">
                 <div class="navigation-bar">
                     <i class="ti-arrow-left" onclick="goBack()"></i>
@@ -33,7 +54,7 @@ async function LoadFromApi() {
                             01
                         </div>
                         <div class="small-number">
-                            / 05
+                            / 0${product.images.length}
                         </div>
     
                     </div>
@@ -55,7 +76,7 @@ async function LoadFromApi() {
                 </div>
     
                 <div class="product-image">
-                    <img class="big-image" src="${product.images}" alt="">
+                    <img class="big-image" src="${product.images[0]}" alt="">
                 </div>
     
                 <div class="price-rate">
@@ -164,232 +185,222 @@ async function LoadFromApi() {
                     </div>
                 </div>`;
 
-            const pictureContainer = document.getElementById('detail-image-detail-product')
-            data.products.images.forEach(image => {
-                const imagetDiv = document.createElement('div');
-                imagetDiv.classList.add('border-others-img');
+    const pictureContainer = document.getElementById('detail-image-detail-product')
+    const maxImagesToShow = 5;  // Số hình ảnh tối đa muốn hiển thị
 
-                const img = document.createElement('img');
-                img.src = image || '../assets/icon-image-not-found-free-vector.jpg';
-                img.alt = product.title;
-                img.classList.add('others-img');
-                img.onclick = function () {
-                    switchImg(event, image)
-                }
+    for (let i = 0; i < Math.min(maxImagesToShow, product.images.length); i++) {
+        const image = product.images[i];
 
-                imagetDiv.appendChild(img)
+        const imagetDiv = document.createElement('div');
+        imagetDiv.classList.add('border-others-img');
 
-                pictureContainer.appendChild(imagetDiv)
-            })
-            // <div class="border-others-img">
-            //             <img class="first-img" onclick = "switchImg(event,'${path1}')" src="${path1}" alt="${product.name}">
-            //         </div>
-        } else {
-            // Hiển thị thông báo "No product"
-            const noProductMessage = document.createElement('p');
-            noProductMessage.textContent = "Not found";
-            productContainer.appendChild(noProductMessage);
+        const img = document.createElement('img');
+        img.src = image || '../assets/icon-image-not-found-free-vector.jpg';
+        img.alt = product.title;
+        img.classList.add('others-img');
+        img.onclick = function () {
+            switchImg(event, image);
         }
 
-    } catch (error) {
-        console.error("Error fetching data:", error);
-        throw error;
-    }
+        imagetDiv.appendChild(img);
 
+        pictureContainer.appendChild(imagetDiv);
+    }
 }
 
-function LoadFromLocal() {
-    var urlParams = new URLSearchParams(window.location.search);
-    var id1 = urlParams.get('id1');
-    var id2 = urlParams.get('id2');
-    var namePath;
-    console.log(id1);
-    console.log(id2);
-    if (id1 === 'bedroom') {
-        var itemList = JSON.parse(localStorage.getItem("productList_Bedroom"));
-        namePath = "Bedroom";
-    } else if (id1 === 'living_room') {
-        var itemList = JSON.parse(localStorage.getItem("productList_Livingroom"));
-        namePath = "Living Room";
-    } else if (id1 === 'dining') {
-        var itemList = JSON.parse(localStorage.getItem("productList_Dining"));
-        namePath = "Dining";
-    }
-    for (let key in itemList) {
-        if (itemList.hasOwnProperty(key)) {
-            const product = itemList[key];
+// function LoadFromLocal() {
+//     var urlParams = new URLSearchParams(window.location.search);
+//     var id1 = urlParams.get('id1');
+//     var id2 = urlParams.get('id2');
+//     var namePath;
+//     console.log(id1);
+//     console.log(id2);
+//     if (id1 === 'bedroom') {
+//         var itemList = JSON.parse(localStorage.getItem("productList_Bedroom"));
+//         namePath = "Bedroom";
+//     } else if (id1 === 'living_room') {
+//         var itemList = JSON.parse(localStorage.getItem("productList_Livingroom"));
+//         namePath = "Living Room";
+//     } else if (id1 === 'dining') {
+//         var itemList = JSON.parse(localStorage.getItem("productList_Dining"));
+//         namePath = "Dining";
+//     }
+//     for (let key in itemList) {
+//         if (itemList.hasOwnProperty(key)) {
+//             const product = itemList[key];
 
-            if (product.id == id2) {
-                var path1 = product.imgDirect + "/1.webp";
-                var path2 = product.imgDirect + "/2.webp";
-                var path3 = product.imgDirect + "/3.webp";
-                var path4 = product.imgDirect + "/4.webp";
-                var path5 = product.imgDirect + "/5.webp";
-                document.getElementsByClassName('item-detail')[0].innerHTML += `
-            <div class="navigation-product-detail">
-            <div class="navigation-bar">
-                <i class="ti-arrow-left" onclick="goBack()"></i>
-                <br>
-                <br>
-                <div class="image-number">
-                    <div class="big-number">
-                        01
-                    </div>
-                    <div class="small-number">
-                        / 05
-                    </div>
+//             if (product.id == id2) {
+//                 var path1 = product.imgDirect + "/1.webp";
+//                 var path2 = product.imgDirect + "/2.webp";
+//                 var path3 = product.imgDirect + "/3.webp";
+//                 var path4 = product.imgDirect + "/4.webp";
+//                 var path5 = product.imgDirect + "/5.webp";
+//                 document.getElementsByClassName('item-detail')[0].innerHTML += `
+//             <div class="navigation-product-detail">
+//             <div class="navigation-bar">
+//                 <i class="ti-arrow-left" onclick="goBack()"></i>
+//                 <br>
+//                 <br>
+//                 <div class="image-number">
+//                     <div class="big-number">
+//                         01
+//                     </div>
+//                     <div class="small-number">
+//                         / 05
+//                     </div>
 
-                </div>
-                <br>
-                <div class="text-nav">
-                    <div class="blur-text" onclick="goBack()">${namePath}</div>
-                    <p>/</p>
-                    <div class="normal-text">${product.name}</div>
-                </div>
-            </div>
-            <div class="move-left-right">
-                <i class="ti-angle-left" onclick="prevImg()"></i>
-                <i class="ti-angle-right" onclick="nextImg()"></i>
-            </div>
-            </div>
- 
-            <div class="product-name">
-                ${product.name}
-            </div>
+//                 </div>
+//                 <br>
+//                 <div class="text-nav">
+//                     <div class="blur-text" onclick="goBack()">${namePath}</div>
+//                     <p>/</p>
+//                     <div class="normal-text">${product.name}</div>
+//                 </div>
+//             </div>
+//             <div class="move-left-right">
+//                 <i class="ti-angle-left" onclick="prevImg()"></i>
+//                 <i class="ti-angle-right" onclick="nextImg()"></i>
+//             </div>
+//             </div>
 
-            <div class="product-image">
-                <img class="big-image" src="${path1}" alt="">
-            </div>
+//             <div class="product-name">
+//                 ${product.name}
+//             </div>
 
-            <div class="price-rate">
-                <div class="product-price">
-                $${product.price}
-                </div>
-                <div class="product-rate">
-                    <div class="yellow-star">
-                        <i class="ti-star"></i>
-                        <i class="ti-star"></i>
-                        <i class="ti-star"></i>
-                        <i class="ti-star"></i>
-                    </div>
-                    <div class="white-star">
-                        <i class="ti-star"></i>
-                    </div>
-                    <div class="rate">
-                        <div class="number-rate">4.0 / 5.0</div>
-                        <div class="blur-number-rate">(221)</div>
-                    </div>
-                </div>
-            </div>
+//             <div class="product-image">
+//                 <img class="big-image" src="${path1}" alt="">
+//             </div>
 
-            <div class="about-product" >
-                ${product.info}
-            </div>
+//             <div class="price-rate">
+//                 <div class="product-price">
+//                 $${product.price}
+//                 </div>
+//                 <div class="product-rate">
+//                     <div class="yellow-star">
+//                         <i class="ti-star"></i>
+//                         <i class="ti-star"></i>
+//                         <i class="ti-star"></i>
+//                         <i class="ti-star"></i>
+//                     </div>
+//                     <div class="white-star">
+//                         <i class="ti-star"></i>
+//                     </div>
+//                     <div class="rate">
+//                         <div class="number-rate">4.0 / 5.0</div>
+//                         <div class="blur-number-rate">(221)</div>
+//                     </div>
+//                 </div>
+//             </div>
 
-            <div class="quantity-add-product">
-                <div class="add-minus-button">
-                    <button class="ti-minus" onclick="decreasequan(this)"></button>
-                    <div class="quantity">1</div>
-                    <button class="ti-plus" onclick="increasequan(this)"></button>
-                </div>
-                <div class="add-product" onclick="addtocart(this)">
-                    <button class="add-product-button" style="cursor: pointer">
-                        Add to Cart
-                    </button>
-                    <div class="notification" >This product has been added to cart</div>
-                </div>
-                
-            </div>
+//             <div class="about-product" >
+//                 ${product.info}
+//             </div>
 
-            <div class="product-notes">
-                •  Ready for delivery in 8–9 weeks. <br>
-                •  Free shipping in HCM city. <br>
-                •  Tool-free assembly .
-            </div>
+//             <div class="quantity-add-product">
+//                 <div class="add-minus-button">
+//                     <button class="ti-minus" onclick="decreasequan(this)"></button>
+//                     <div class="quantity">1</div>
+//                     <button class="ti-plus" onclick="increasequan(this)"></button>
+//                 </div>
+//                 <div class="add-product" onclick="addtocart(this)">
+//                     <button class="add-product-button" style="cursor: pointer">
+//                         Add to Cart
+//                     </button>
+//                     <div class="notification" >This product has been added to cart</div>
+//                 </div>
 
-            <div class="content-detail-image">
-                <i class="ti-heart" onclick="addToWishList(this)" style="cursor: pointer"></i> Add to wishlist 
-                <div class="notification_wishlist" >This product has been added to wishlist</div>
-                <i class="ti-reload"></i> Add to Compare 
-                <div class="share">Share Product: 
-                    <i class="ti-share"></i>
-                    <i class="ti-twitter"></i>
-                    <i class="ti-pinterest"></i>
-                    <i class="ti-instagram"></i>
-                </div>
+//             </div>
 
-                <div class="detail-image">
-                    <div class="border-others-img">
-                        <img class="first-img" onclick = "switchImg(event,'${path1}')" src="${path1}" alt="${product.name}">
-                    </div>
-                    <div class="border-others-img">
-                        <img class="others-img" onclick = "switchImg(event,'${path2}')" src="${path2}" alt="${product.name}">
-                    </div>
-                    <div class="border-others-img">
-                        <img class="others-img" onclick = "switchImg(event,'${path3}')" src="${path3}" alt="${product.name}">
-                    </div>
-                    <div class="border-others-img">
-                        <img class="others-img" onclick = "switchImg(event,'${path4}')" src="${path4}" alt="${product.name}">
-                    </div>
-                    <div class="border-others-img">
-                        <img class="others-img" onclick = "switchImg(event,'${path5}')" src="${path5}" alt="${product.name}">
-                    </div>
-                </div>
-            </div>
+//             <div class="product-notes">
+//                 •  Ready for delivery in 8–9 weeks. <br>
+//                 •  Free shipping in HCM city. <br>
+//                 •  Tool-free assembly .
+//             </div>
 
-            <div class="warranty">
-                <div class="blur-text-wh">Warranty</div>
-                <div class="normal-text-wh">
-                    The product comes with a 12 month warranty against any manufacturing defects and <br>
-                    any other issues with the materials that have been used.
-                </div>
-            </div>
+//             <div class="content-detail-image">
+//                 <i class="ti-heart" onclick="addToWishList(this)" style="cursor: pointer"></i> Add to wishlist 
+//                 <div class="notification_wishlist" >This product has been added to wishlist</div>
+//                 <i class="ti-reload"></i> Add to Compare 
+//                 <div class="share">Share Product: 
+//                     <i class="ti-share"></i>
+//                     <i class="ti-twitter"></i>
+//                     <i class="ti-pinterest"></i>
+//                     <i class="ti-instagram"></i>
+//                 </div>
 
-            <div class="highlights">
-                <div class="blur-text-wh">Highlights</div>
-                <div class="highlights-details">
-                    <div class="details">
-                        <i class="ti-control-record"></i>
-                        <div class="normal-text-wh">
-                            Material: Engineered Wood
-                        </div>
-                    </div>
-                    <div class="details">
-                        <i class="ti-control-record"></i>
-                        <div class="normal-text-wh">
-                            Upholstery Included
-                        </div>
-                    </div>
-                    <div class="details">
-                        <i class="ti-control-record"></i>
-                        <div class="normal-text-wh">
-                            W x H x D: ${product.width}” x ${product.height}” x ${product.depth}” 
-                        </div>
-                    </div>
-                    <div class="details">
-                        <i class="ti-control-record"></i>
-                        <div class="normal-text-wh">
-                            Weight: ${product.weight} kg
-                        </div>
-                    </div>
-                    <div class="details">
-                        <i class="ti-control-record"></i>
-                        <div class="normal-text-wh">
-                            Knock Down - Delivered in non-assembled pieces, installation by service partner
-                        </div>
-                    </div>
-                </div>
-            </div>`
-                break;
-            }
-        }
-    }
-};
+//                 <div class="detail-image">
+//                     <div class="border-others-img">
+//                         <img class="first-img" onclick = "switchImg(event,'${path1}')" src="${path1}" alt="${product.name}">
+//                     </div>
+//                     <div class="border-others-img">
+//                         <img class="others-img" onclick = "switchImg(event,'${path2}')" src="${path2}" alt="${product.name}">
+//                     </div>
+//                     <div class="border-others-img">
+//                         <img class="others-img" onclick = "switchImg(event,'${path3}')" src="${path3}" alt="${product.name}">
+//                     </div>
+//                     <div class="border-others-img">
+//                         <img class="others-img" onclick = "switchImg(event,'${path4}')" src="${path4}" alt="${product.name}">
+//                     </div>
+//                     <div class="border-others-img">
+//                         <img class="others-img" onclick = "switchImg(event,'${path5}')" src="${path5}" alt="${product.name}">
+//                     </div>
+//                 </div>
+//             </div>
+
+//             <div class="warranty">
+//                 <div class="blur-text-wh">Warranty</div>
+//                 <div class="normal-text-wh">
+//                     The product comes with a 12 month warranty against any manufacturing defects and <br>
+//                     any other issues with the materials that have been used.
+//                 </div>
+//             </div>
+
+//             <div class="highlights">
+//                 <div class="blur-text-wh">Highlights</div>
+//                 <div class="highlights-details">
+//                     <div class="details">
+//                         <i class="ti-control-record"></i>
+//                         <div class="normal-text-wh">
+//                             Material: Engineered Wood
+//                         </div>
+//                     </div>
+//                     <div class="details">
+//                         <i class="ti-control-record"></i>
+//                         <div class="normal-text-wh">
+//                             Upholstery Included
+//                         </div>
+//                     </div>
+//                     <div class="details">
+//                         <i class="ti-control-record"></i>
+//                         <div class="normal-text-wh">
+//                             W x H x D: ${product.width}” x ${product.height}” x ${product.depth}” 
+//                         </div>
+//                     </div>
+//                     <div class="details">
+//                         <i class="ti-control-record"></i>
+//                         <div class="normal-text-wh">
+//                             Weight: ${product.weight} kg
+//                         </div>
+//                     </div>
+//                     <div class="details">
+//                         <i class="ti-control-record"></i>
+//                         <div class="normal-text-wh">
+//                             Knock Down - Delivered in non-assembled pieces, installation by service partner
+//                         </div>
+//                     </div>
+//                 </div>
+//             </div>`
+//                 break;
+//             }
+//         }
+//     }
+// };
 
 
 
 //add product to localStorage
 function addtocart(curr) {
+    console.log("fullInfo: ", fullInfo);
     let products = [];
     let key = this.location.href
     key = key.slice(key.indexOf('?')).slice(5)
@@ -405,22 +416,21 @@ function addtocart(curr) {
     if (localStorage.getItem("products")) {
         products.push(...JSON.parse(localStorage.getItem("products")));
     }
-
     let product = {
         id1: id1,
-        id2: id2,
-        img: img,
-        productname: productname,
-        productprice: productprice,
+        infor: fullInfo,
         productquan: productquan,
         producttotal: producttotal.toString()
     };
-    let isExist = products.some(x => x.id2 == product.id2);
+
+    let isExist = products.some(x => x.infor._id == product.infor._id);
+    
     if (!isExist) {
         products.push(product);
     }
     else show_notification()
-
+    // products = [];
+    // productFull = [];
     localStorage.setItem("products", JSON.stringify(products));
     const listItem = JSON.parse(localStorage.getItem('products'));
     var count = listItem ? listItem.length : 0;
@@ -466,8 +476,6 @@ function switchImg(event, source) {
     bigNumberDiv.textContent = newNumber;
 }
 
-var currentImage = 1;
-var totalImages = 5;
 function prevImg() {
     currentImage--;
     if (currentImage < 1) {

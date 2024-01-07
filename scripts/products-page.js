@@ -1,56 +1,49 @@
+var urlParams = new URLSearchParams(window.location.search);
+var id = urlParams.get('id');
+var listAllProduct = [];
+var listProductBaseCategory = [];
+
+window.onload = function () {
+    console.log(id);
+    const address = document.getElementById('address');
+    if (id === 'living_room') {
+        address.innerText = 'LIVING ROOM';
+        //addProduct();
+    } else if (id === 'bedroom') {
+        address.innerText = 'BEDROOM';
+        //addProduct();
+    } else if (id === 'dining') {
+        address.innerText = 'DINING';
+        //addProduct();
+    }
+    getAllProducts();
+    sortProductBaseCategory();
+}
+
 async function getAllProducts() {
     try {
         const responseAPI = await fetch('http://localhost:3000/api/products');
         const data = await responseAPI.json();
-
         const productContainer = document.getElementById('productContainer');
 
-        // Xóa nội dung hiện tại của productContainer
-        productContainer.innerHTML = '';
+        if (data.message != "OK") {
+            // Hiển thị thông báo "Can't get product"
+            const noProductMessage = document.createElement('p');
+            noProductMessage.textContent = "Can't get product";
+            productContainer.appendChild(noProductMessage);
+            return;
+        }
 
-        if (data.message === "OK" && data.products.length > 0) {
-            console.log(data);
-
-            data.products.forEach(product => {
-                const productDiv = document.createElement('div');
-                productDiv.classList.add('product-1');
-
-                const img = document.createElement('img');
-                img.src = product.images[0] || '../assets/icon-image-not-found-free-vector.jpg';
-                img.alt = product.title;
-                img.classList.add('product-img');
-
-                const productIntro = document.createElement('div');
-                productIntro.classList.add('product-intro');
-
-                const productName = document.createElement('p');
-                productName.classList.add('product-name');
-                productName.textContent = product.title;
-
-                const productCost = document.createElement('p');
-                productCost.classList.add('product-cost');
-                productCost.textContent = `$${product.price}`;
-
-                productIntro.appendChild(productName);
-                productIntro.appendChild(productCost);
-
-                productDiv.appendChild(img);
-                productDiv.appendChild(productIntro);
-
-                // Thêm sự kiện onclick
-                productDiv.onclick = function () {
-                    goToDetailProduct('product-detail-page.html', id, product._id);
-                };
-
-                productContainer.appendChild(productDiv);
-            });
-
-        } else {
+        if (data.products.length == 0) {
             // Hiển thị thông báo "No product"
             const noProductMessage = document.createElement('p');
             noProductMessage.textContent = "No product";
             productContainer.appendChild(noProductMessage);
+            return;
         }
+
+        listAllProduct = data.products;
+        console.log(data);        
 
         return data;
     } catch (error) {
@@ -59,22 +52,80 @@ async function getAllProducts() {
     }
 }
 
-var urlParams = new URLSearchParams(window.location.search);
-var id = urlParams.get('id');
-window.onload = function(){
-    console.log(id);
-    const address = document.getElementById('address');
-    if(id === 'living_room')
-    {
-        address.innerText = 'LIVING ROOM';
-        addProduct();
-    } else if(id === 'bedroom'){
-        address.innerText = 'BEDROOM';
-       //addProduct();
-    } else if(id === 'dining'){
-        address.innerText = 'DINING';
-        //addProduct();
+function createBlockProduct(products) {
+    console.log("Product base category: ", products)
+    products.forEach(product => {
+        const productDiv = document.createElement('div');
+        productDiv.classList.add('product-1');
+
+        const img = document.createElement('img');
+        img.src = product.images[0] || '../assets/icon-image-not-found-free-vector.jpg';
+        img.alt = product.title;
+        img.classList.add('product-img');
+
+        const productIntro = document.createElement('div');
+        productIntro.classList.add('product-intro');
+
+        const productName = document.createElement('p');
+        productName.classList.add('product-name');
+        productName.textContent = product.title;
+
+        const productCost = document.createElement('p');
+        productCost.classList.add('product-cost');
+        productCost.textContent = `$${product.price}`;
+
+        productIntro.appendChild(productName);
+        productIntro.appendChild(productCost);
+
+        productDiv.appendChild(img);
+        productDiv.appendChild(productIntro);
+
+        // Thêm sự kiện onclick
+        productDiv.onclick = function () {
+            goToDetailProduct('product-detail-page.html', id, product._id);
+        };
+
+        productContainer.appendChild(productDiv);
+    });
+}
+
+async function getCategory() {
+    try {
+        const responseAPI = await fetch('http://localhost:3000/api/categories');
+        const data = await responseAPI.json();
+        console.log(data);
+        return data;
+    } catch (error) {
+        console.error("Error fetching data:", error);
+        throw error;
     }
+}
+
+function getCategoryName(product, allCategory) {
+    console.log("Each product: ", product);
+    console.log("allCategory: ", allCategory);
+    const matchingCategory = allCategory.categories.find(category => product.category === category._id)
+    if (matchingCategory) {
+        console.log(matchingCategory);
+        return matchingCategory;
+    } else {
+        console.log("Category not found");
+        return null; // hoặc giá trị mặc định phù hợp
+    }
+}
+
+async function sortProductBaseCategory() {
+    let allCategory = await getCategory();
+    listProductBaseCategory = [];
+    listAllProduct.forEach(product => {
+        if ((getCategoryName(product, allCategory).parent?.name === address.innerText)||(getCategoryName(product, allCategory).name === address.innerText))
+        {listProductBaseCategory.push(product)}
+    })
+}
+
+async function showProductPage() {
+    await sortProductBaseCategory()
+    createBlockProduct(listProductBaseCategory);
 }
 
 const productList_Bedroom = {
@@ -223,8 +274,7 @@ const productList_Bedroom = {
         "tags": []
     }
 };
-const productListnew = JSON.stringify(productList_Bedroom);
-localStorage.setItem("productList_Bedroom", productListnew);
+localStorage.setItem("productList_Bedroom", JSON.stringify(productList_Bedroom));
 
 const productList_Livingroom = {
     "7": {
@@ -575,22 +625,22 @@ function sortProducts(productList, sortOption) {
     const productArray = Object.values(productList);
 
     const sortedProducts = productArray.sort((a, b) => {
-      switch (sortOption) {
-        case 'low-high':
-          return a.price - b.price;
-        case 'high-low':
-          return b.price - a.price;
-        case 'a-z':
-          return a.name.localeCompare(b.name);
-        case 'z-a':
-          return b.name.localeCompare(a.name);
-        case 'default':
-          return;
-        default:
-          return;
-      }
+        switch (sortOption) {
+            case 'low-high':
+                return a.price - b.price;
+            case 'high-low':
+                return b.price - a.price;
+            case 'a-z':
+                return a.title.localeCompare(b.title);
+            case 'z-a':
+                return b.title.localeCompare(a.title);
+            case 'default':
+                return;
+            default:
+                return;
+        }
     });
-  
+
     return sortedProducts;
 }
 
@@ -599,32 +649,27 @@ document.getElementById('search-product-page').oninput = function () {
     searchAndDisplayResults(searchTerm);
 };
 
-function searchAndDisplayResults(searchTerm) {
-    var itemList;
+async function searchAndDisplayResults(searchTerm) {
 
-    if (id === 'bedroom') {
-        itemList = JSON.parse(localStorage.getItem("productList_Bedroom"));
-    } else if (id === 'living_room') {
-        itemList = JSON.parse(localStorage.getItem("productList_Livingroom"));
-    } else if (id === 'dining') {
-        itemList = JSON.parse(localStorage.getItem("productList_Dining"));
-    }
+    //await getAllProducts();
+    //await sortProductBaseCategory();
+    console.log("listAllProduct: ", listAllProduct)
+    console.log("listProductBaseCategory: ", listProductBaseCategory)
+    console.log("searchTerm: ", searchTerm)
 
-    var filteredList = itemList.filter(function (product) {
-        return product.name.toLowerCase().includes(searchTerm);
-    });
-
+    var filteredList = listProductBaseCategory.filter(product => product.title.toLowerCase().includes(searchTerm.toLowerCase()));
+    
+    console.log("filteredList: ", filteredList)
     document.getElementsByClassName('product-box-detail')[0].innerHTML = "";
-
     for (let key in filteredList) {
         if (filteredList.hasOwnProperty(key)) {
             const product = filteredList[key];
-            var path = product.imgDirect + "/1.webp";
+            var path = product.images[0] || '../assets/icon-image-not-found-free-vector.jpg';
             document.getElementsByClassName('product-box-detail')[0].innerHTML += `
-                <div class="product-1" onclick="goToDetailProduct('product-detail-page.html','${id}',${product.id})">
+                <div class="product-1" onclick="goToDetailProduct('product-detail-page.html','${id}','${product._id}')">
                     <img src="${path}" alt="${product.name}" class="product-img">
                     <div class="product-intro">
-                        <p class="product-name">${product.name}</p>
+                        <p class="product-name">${product.title}</p>
                         <p class="product-cost">$${product.price}</p>
                     </div>
                 </div>`;
@@ -632,63 +677,52 @@ function searchAndDisplayResults(searchTerm) {
     }
 }
 
-function addProduct(){
-    var itemList;
+// function addProduct() {
+//     var itemList;
 
-    if(id === 'bedroom' ){
-        itemList = JSON.parse(localStorage.getItem("productList_Bedroom"));
-    } else if(id === 'living_room'){
-        itemList = JSON.parse(localStorage.getItem("productList_Livingroom"));
-    } else if(id === 'dining'){
-        itemList = JSON.parse(localStorage.getItem("productList_Dining"));
-    }
+//     if (id === 'bedroom') {
+//         itemList = JSON.parse(localStorage.getItem("productList_Bedroom"));
+//     } else if (id === 'living_room') {
+//         itemList = JSON.parse(localStorage.getItem("productList_Livingroom"));
+//     } else if (id === 'dining') {
+//         itemList = JSON.parse(localStorage.getItem("productList_Dining"));
+//     }
 
-    document.getElementsByClassName('product-box-detail')[0].innerHTML = "";
+//     document.getElementsByClassName('product-box-detail')[0].innerHTML = "";
 
-    for (let key in itemList) {
-        if (itemList.hasOwnProperty(key)) {
-            const product = itemList[key];
-            var path = product.imgDirect + "/1.webp";
-            document.getElementsByClassName('product-box-detail')[0].innerHTML += `
-                <div class="product-1" onclick="goToDetailProduct('product-detail-page.html','${id}',${product.id})">
-                    <img src="${path}" alt="${product.name}" class="product-img">
-                    <div class="product-intro">
-                        <p class="product-name">${product.name}</p>
-                        <p class="product-cost">$${product.price}</p>
-                    </div>
-                </div>`;
-        }
-    }
-}
+//     for (let key in itemList) {
+//         if (itemList.hasOwnProperty(key)) {
+//             const product = itemList[key];
+//             var path = product.imgDirect + "/1.webp";
+//             document.getElementsByClassName('product-box-detail')[0].innerHTML += `
+//                 <div class="product-1" onclick="goToDetailProduct('product-detail-page.html','${id}',${product.id})">
+//                     <img src="${path}" alt="${product.name}" class="product-img">
+//                     <div class="product-intro">
+//                         <p class="product-name">${product.name}</p>
+//                         <p class="product-cost">$${product.price}</p>
+//                     </div>
+//                 </div>`;
+//         }
+//     }
+// }
 
 
 
-function sortProductList(sortType){
-    console.log('tesst sort tp')
+function sortProductList(sortType) {
     console.log(sortType)
-    var itemList;
 
-    if(id === 'bedroom' ){
-        itemList = JSON.parse(localStorage.getItem("productList_Bedroom"));
-    } else if(id === 'living_room'){
-        itemList = JSON.parse(localStorage.getItem("productList_Livingroom"));
-    } else if(id === 'dining'){
-        itemList = JSON.parse(localStorage.getItem("productList_Dining"));
-    }
-
-    itemList = sortProducts(itemList, sortType)
+    listProductBaseCategory = sortProducts(listProductBaseCategory, sortType)
 
     document.getElementsByClassName('product-box-detail')[0].innerHTML = "";
-
-    for (let key in itemList) {
-        if (itemList.hasOwnProperty(key)) {
-            const product = itemList[key];
-            var path = product.imgDirect + "/1.webp";
+    for (let key in listProductBaseCategory) {
+        if (listProductBaseCategory.hasOwnProperty(key)) {
+            const product = listProductBaseCategory[key];
+            var path = product.images[0] || '../assets/icon-image-not-found-free-vector.jpg';
             document.getElementsByClassName('product-box-detail')[0].innerHTML += `
-                <div class="product-1" onclick="goToDetailProduct('product-detail-page.html','${id}',${product.id})">
+                <div class="product-1" onclick="goToDetailProduct('product-detail-page.html','${id}','${product._id}')">
                     <img src="${path}" alt="${product.name}" class="product-img">
                     <div class="product-intro">
-                        <p class="product-name">${product.name}</p>
+                        <p class="product-name">${product.title}</p>
                         <p class="product-cost">$${product.price}</p>
                     </div>
                 </div>`;
@@ -701,7 +735,7 @@ function changeProductPage(roomName) {
     if (id == roomName)
         return;
     else {
-        goToProduct('products-page.html',roomName);
+        goToProduct('products-page.html', roomName);
     }
 }
 
